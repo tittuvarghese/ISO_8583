@@ -1146,7 +1146,7 @@ test('should handle data encoded in plain text utf8 including the bitmap case 1'
 
   const isopack = new Main();
   const isoString = '0800822000000000000004000000000000001125161336000255301';
-  const config = {lenHeader: false, lenHeaderEncoding: 'utf8', bitmapEncoding: 'utf8', secondaryBitmap: false, };
+  const config = {lenHeader: false, lenHeaderEncoding: 'utf8', bitmapEncoding: 'utf8', secondaryBitmap: true, };
   const message = isopack.getIsoJSON(new Buffer.alloc(isoString.length, isoString), config);
   
   t.is(message[0], '0800');
@@ -1157,7 +1157,7 @@ test('should handle data encoded in plain text utf8 including the bitmap case 2'
 
   const isopack = new Main();
   const isoString = '0800822000000800000004000000000000000904003641670011f8f2f4f6f0f0f6f7f0f0f1f10301';
-  const config = {lenHeader: false, lenHeaderEncoding: 'utf8', bitmapEncoding: 'utf8', secondaryBitmap: false, };
+  const config = {lenHeader: false, lenHeaderEncoding: 'utf8', bitmapEncoding: 'utf8', secondaryBitmap: true, };
   const message = isopack.getIsoJSON(new Buffer.alloc(isoString.length, isoString), config);
   
   t.is(message[0], '0800');
@@ -1184,4 +1184,24 @@ test('should unpack data that has no secondary bitmap', t=> {
   t.is(message[7], '0823151716');
   t.is(message[11], '000001');
   t.is(message[41], '00000001');
+});
+
+test('should unpack and unpack data that has no secondary bitmap, with explicit override', t=> {
+  
+  const isopack = new Main();
+  const isoString = '0200c000000000000000194761739001010119';
+  const config = { lenHeader: false, bitmapEncoding: 'utf8', secondaryBitmap: false, };
+  const message = isopack.getIsoJSON(new Buffer.alloc(isoString.length, isoString), config);
+
+  t.is(message[0], '0200');
+  t.is(message[2], '4761739001010119');
+
+  const isopack1 = new Main(message);
+  isopack1.setBitMapEncoding('utf8');
+  isopack1.setSecondaryBitmap(false);
+  const messageBuf1 = isopack1.getBufferMessage();
+  const message1 = isopack.getIsoJSON(messageBuf1, {...config, lenHeader: true});
+
+  t.is(message1[0], '0200');
+  t.is(message[2], '4761739001010119');
 });

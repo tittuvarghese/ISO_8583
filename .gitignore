@@ -9,3 +9,4 @@ yarn.lock
 *.log
 coveragex
 docs
+run.js
