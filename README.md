@@ -1,13 +1,13 @@
 # ISO_8583
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/zemuldo/iso_8583.svg)](https://greenkeeper.io/)~![Travis CI build badge](https://travis-ci.org/zemuldo/iso_8583.svg?branch=master)~[![Known Vulnerabilities](https://snyk.io/test/github/zemuldo/iso_8583/badge.svg?targetFile=package.json)](https://snyk.io/test/github/zemuldo/iso_8583?targetFile=package.json)
+[![Greenkeeper badge](https://badges.greenkeeper.io/zemuldo/iso_8583_i.svg)](https://greenkeeper.io/)~![Travis CI build badge](https://travis-ci.org/zemuldo/iso_8583_i.svg?branch=master)~[![Known Vulnerabilities](https://snyk.io/test/github/zemuldo/iso_8583_i/badge.svg?targetFile=package.json)](https://snyk.io/test/github/zemuldo/iso_8583_i?targetFile=package.json)
 
 ISO_8583 is a <span style="color:green; font-size:18px">Customizable ISO 8583 Library for JavaScript and NodeJS</span> that does message conversion between a system and an interface that exchange [ISO 8583 Financial transaction card originated messages](https://en.wikipedia.org/wiki/ISO_8583).
 
 ##  Install from npm using
 
 ```
-npm install --save iso_8583
+npm install --save iso_8583_i
 ```
 
 ## Usage: Bitmap Messaging
@@ -108,12 +108,12 @@ Messages are packaged as:
 >In the above case the library will expand them.    
 >If they are already broken down to subfields, nothing changes.    
 >To invoke the package initialize with the iso8583 json or object as argument. If the json contains any fields not defined in iso8583 or has no field 0, the error is returned in an object.    
->If you want to handle xml iso 8583 messages, the usage is described down there. 
+>If you want to handle xml iso 8583 messages, the usage is described down there.
 
 ## Example
 
 ```javascript
-const iso8583 = require('iso_8583');
+const iso8583 = require('iso_8583_i');
 let data = {
     0: "0100",
     2: "4761739001010119",
@@ -178,7 +178,7 @@ isopack.getBmpsBinary(); // returns a string '1111001000111..' or an error objec
 
 To get the bitmap active fields:
 ```javascript
-isopack.getBitMapFields(); 
+isopack.getBitMapFields();
 // returns the array of enabled fields in bitmap, excluding MTI and bitmap fields
 // e.g. [2, 3, 4, 7, 12, 13, 14, 18, 22, 23, 25, 26, 32, 33, 35, 41, 42, 43, 49, 52, 56, 123, 127]
 
@@ -198,7 +198,7 @@ isopack.getBitMapHex_127_ext_25();  // returns 'fe1e5f7c00000000'
 To get a raw message:
 
 ```javascript
-let bufferMessage = isopack.getRawMessage(); 
+let bufferMessage = isopack.getRawMessage();
 // returns a buffer containing the message (without 2-byte length field) or an error object
 <Buffer 30 31 30 30 f2 3c 46 c0 20 e8 80 00 00 00 00 00 00 00 00 20 30 37 35 34 ...
 
@@ -207,8 +207,8 @@ let bufferMessage = isopack.getRawMessage();
 To get a buffer tcp message to send to the ISO 8583 Interface:
 
 ```javascript
-let bufferMessage = isopack.getBufferMessage(); 
-// returns a buffer containing the message with 2 additional bytes indicating the length 
+let bufferMessage = isopack.getBufferMessage();
+// returns a buffer containing the message with 2 additional bytes indicating the length
 // or an error object
 <Buffer 01 11 30 31 30 30 f2 3c 46 c0 20 e8 80 00 00 00 00 00 00 00 00 20 30 37 35 34 ...
 
@@ -216,7 +216,7 @@ let bufferMessage = isopack.getBufferMessage();
 
 To get the field description:
 ```javascript
-const iso8583 = require('iso_8583');
+const iso8583 = require('iso_8583_i');
 iso8583.getFieldDescription(24);
 // The object with field descriptions to be returned:
 // {24: 'Network International identifier (NII)'}
@@ -224,12 +224,12 @@ iso8583.getFieldDescription(24);
 
 To get the several fields descriptions:
 ```javascript
-const iso8583 = require('iso_8583');
+const iso8583 = require('iso_8583_i');
 iso8583.getFieldDescription([24, 37, 39]);
 // The object with field descriptions to be returned:
 // {
 //    24: 'Network International identifier (NII)'},
-//    37: 'Retrieval reference number', 
+//    37: 'Retrieval reference number',
 //    39: 'Response code'
 // }
 ```
@@ -342,15 +342,15 @@ Initialize the iso object with the json as argument
   let isopack = new isoPack(data);
   isoPack.toRetransmit()
   isoPack.getMti(); // returns '0401'
-  
+
   isopack = new isoPack(data);
-  isoPack.toResponse(); 
+  isoPack.toResponse();
   isoPack.getMti(); // returns '0410'
-  
+
   isopack = new isoPack(data);
-  isoPack.toAdvice(); 
+  isoPack.toAdvice();
   isoPack.getMti(); // returns '0420'
-  
+
 ```
 
 There are other cool stuff like ```isoPack.attachTimeStamp()``` which adds times stamps to field 7,12,13, plus more
